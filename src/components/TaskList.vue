@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>タスク一覧</h1>
+    <h2>タスク一覧</h2>
     <ul>
       <li v-for="task in tasks" :key="task.id">
         <div v-if="editTaskId === task.id">
@@ -63,27 +63,13 @@ export default {
 
 <style scoped>
 ul {
-  max-width: 600px;
-  margin: 0 auto;
   padding: 0;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  list-style: none;
 }
-
 li {
+  margin: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-li:last-child {
-  border-bottom: none;
-}
-
-button {
-  margin-left: 10px;
 }
 </style>

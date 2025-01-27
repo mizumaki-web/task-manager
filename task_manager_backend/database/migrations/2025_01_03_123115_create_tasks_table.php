@@ -15,6 +15,7 @@ return new class extends Migration
         $table->id();               // タスクのID
         $table->string('title');    // タスク名
         $table->string('status');   // ステータス（例: 未着手、進行中、完了）
+        $table->date('due_date')->nullable(); // 締め切り日（NULLを許容）
         $table->timestamps();       // 作成日と更新日
     });
 }

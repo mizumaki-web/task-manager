@@ -9,6 +9,6 @@ class Task extends Model
 {
     use HasFactory;
 
-    // 一括割り当て可能なフィールドを定義
+    // 一括割り当て可能なフィールド
     protected $fillable = ['title', 'status'];
 }
