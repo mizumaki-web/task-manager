@@ -3,18 +3,21 @@
     <h1>タスク管理アプリ</h1>
     <TaskForm @add-task="addTask" />
     <TaskList :tasks="tasks" @delete-task="deleteTask" @edit-task="editTask" />
+    <Calendar :tasks="tasks" /> <!-- tasks を Calendar に渡す -->
   </div>
 </template>
 
 <script>
 import TaskList from './components/TaskList.vue';
 import TaskForm from './components/TaskForm.vue';
+import Calendar from './components/Calendar.vue';
 import apiClient from './api';
 
 export default {
   components: {
     TaskList,
     TaskForm,
+    Calendar,
   },
   data() {
     return {
@@ -35,14 +38,14 @@ export default {
         });
     },
     addTask(newTask) {
-      apiClient.post('/tasks', newTask)
-        .then(response => {
-          this.tasks.push(response.data); // 新しいタスクを追加
-        })
-        .catch(error => {
-          console.error('タスクの追加に失敗しました:', error);
-        });
-    },
+    apiClient.post('/tasks', newTask)
+      .then(response => {
+        this.tasks.push(response.data); // 新しいタスクをリストに追加
+      })
+      .catch(error => {
+        console.error('タスクの追加に失敗しました:', error);
+      });
+  },
     deleteTask(taskId) {
       apiClient.delete(`/tasks/${taskId}`)
         .then(() => {
@@ -67,11 +70,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 20px;
-}
-</style>

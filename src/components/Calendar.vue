@@ -1,34 +1,49 @@
 <template>
   <div>
-    <FullCalendar
-      :events="events"
-      :initialView="'dayGridMonth'"
-      @dateClick="handleDateClick"
-    />
+    <FullCalendar :options="calendarOptions" />
   </div>
 </template>
 
 <script>
-import FullCalendar from "@fullcalendar/vue3";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import { defineComponent } from 'vue'
+import FullCalendar from '@fullcalendar/vue3'
+import dayGridPlugin from '@fullcalendar/daygrid'
 
-export default {
+export default defineComponent({
+  name: 'TaskCalendar',
   components: {
     FullCalendar,
   },
   data() {
-    return {
-      events: [
-        { title: "タスク1", start: "2025-01-15" },
-        { title: "タスク2", start: "2025-01-20" },
-      ],
+    return { 
+      calendarOptions: {
+        plugins: [dayGridPlugin],
+        initialView: 'dayGridMonth',
+        events: [], // タスクのイベントデータをここに追加
+      },
     };
   },
-  methods: {
-    handleDateClick(info) {
-      console.log("選択した日付:", info.dateStr);
-    },
+  props: {
+    tasks: Array, // タスク一覧を親から受け取る
   },
-};
+  watch: {
+  tasks: {
+    handler(newTasks) {
+      this.calendarOptions.events = newTasks
+        .filter(task => task.start_date && task.end_date) // 日付があるタスクだけ
+        .map(task => ({
+          title: task.title,
+          start: task.start_date, // 開始日
+          end: task.end_date,     // 締切日
+        }));
+    },
+    deep: true,
+  },
+},
+
+});
 </script>
+
+<style>
+/* 必要に応じてCSSを追加 */
+</style>

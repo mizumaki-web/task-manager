@@ -18,17 +18,34 @@ class TaskController extends Controller
     // 新しいタスクを作成
     public function store(Request $request)
     {
-        $task = Task::create($request->only(['title', 'status']));
-        return response()->json($task, 201); // 201: Created
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'status' => 'required|string|max:255',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+        ]);
+    
+        $task = Task::create($validated);
+    
+        return response()->json($task, 201);
     }
+    
 
     // タスクを更新
-    public function update(Request $request, $id)
-    {
-        $task = Task::findOrFail($id);
-        $task->update($request->only(['title', 'status']));
-        return response()->json($task);
-    }
+    public function update(Request $request, Task $task)
+{
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'status' => 'required|string|max:255',
+        'start_date' => 'nullable|date',
+        'end_date' => 'nullable|date',
+    ]);
+
+    $task->update($validated);
+
+    return response()->json($task);
+}
+
 
     // タスクを削除
     public function destroy($id)
